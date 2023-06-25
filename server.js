@@ -99,6 +99,7 @@ function onMessage(msg) {
 
             const playerOne = {    //One player object
                 'clientId': data.clientId,
+                'username': data.username,
                 'symbol': 'x',      //Player 1 is x, player 2 is o
                 'isTurn': true
             };
@@ -121,11 +122,28 @@ function onMessage(msg) {
         case 'join':
             const playerTwo = {
                 'clientId': data.clientId,
+                'username': data.username,
                 'symbol': 'o',      //Player 1 is x, player 2 is o
                 'isTurn': false
             }
             games[data.gameId].players.push(playerTwo);    //Assign 2nd player to game
             sendAvailableGames();   //Refresh list of available games
+            games[data.gameId].players.forEach(function(player,index) {
+                var opponent = 'name';
+                console.log(index);
+                if (index == 0) {
+                    opponent = games[data.gameId].players[1].username;
+                } else {
+                    opponent = games[data.gameId].players[0].username;
+                }
+                clients[player.clientId].conn.send(JSON.stringify({ //Send client the joined game
+                    'tag': 'joined',
+                    'gameId': data.gameId,
+                    'symbol': player.symbol,
+                    'opponent': opponent
+                }))
+            })
+            /*
             games[data.gameId].players.forEach(player=> {
                 clients[player.clientId].conn.send(JSON.stringify({ //Send client the joined game
                     'tag': 'joined',
@@ -133,6 +151,7 @@ function onMessage(msg) {
                     'symbol': player.symbol
                 }))
             })
+            */
             updateBoard(data.gameId);
             break;
 
@@ -143,13 +162,15 @@ function onMessage(msg) {
             const isWinner = winState(data.gameId);
             const isDraw = drawState(data.gameId);
             if(isWinner){
+                updateBoard(data.gameId);
                 games[data.gameId].players.forEach(player => {
                     clients[player.clientId].conn.send(JSON.stringify({
                         'tag': 'winner',
-                        'winner': player.symbol
+                        'isTurn': player.isTurn,
                     }))
                 })
             } else if(isDraw) {
+                updateBoard(data.gameId);
                 games[data.gameId].players.forEach(player => {
                     clients[player.clientId].conn.send(JSON.stringify({
                         'tag': 'gameDraw'

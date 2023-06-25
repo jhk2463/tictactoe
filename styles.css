@@ -76,6 +76,10 @@ body {
     /* position: relative; */
 }
 
+.statusBox {
+    display: none;
+}
+
 .board {
     position: relative;
     margin: auto;

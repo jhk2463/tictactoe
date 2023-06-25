@@ -13,6 +13,10 @@ const gamesList = document.querySelector('ul');
 const board = document.querySelector('.board');
 const cells = document.querySelectorAll('.cell');
 const username = document.querySelector('#username');
+const statusBox = document.querySelector('.statusBox');
+const gameOpponent = document.querySelector('.gameOpponent');
+const gameSymbol = document.querySelector('.gameSymbol');
+const gameTurn = document.querySelector('.gameTurn');
 create.disabled = true;
 join.disabled = true;
 
@@ -43,6 +47,7 @@ join.addEventListener('click', () => {
     socket.send(JSON.stringify({
         'tag': 'join',
         'clientId': clientId,
+        'username': username.value,
         'gameId': gameId
     }))
 })
@@ -138,6 +143,11 @@ function onMessage(msg) {
         case 'joined':
             document.querySelector('.board').style.display='grid';
             symbol = data.symbol;
+            console.log(data.symbol);
+            console.log(data.opponent);
+            gameSymbol.innerText = "You are " + symbol;
+            gameOpponent.innerText = "You are playing against " + data.opponent;
+            statusBox.style.display="inline"; 
             if(symbol == 'x'){
                 board.classList.add('cross');
             } else {
@@ -164,12 +174,19 @@ function onMessage(msg) {
             }
             //Allow player to make move if it is their turn
             if(data.isTurn) {
+                gameTurn.innerText = "It is your turn";
                 makeMove();
+            } else {
+                gameTurn.innerText = "Opponent is making a move";
             }
             break;
         
         case 'winner':
-            alert(`The winner is ${data.winner}`);
+            if(data.isTurn) {
+                alert('You won!');
+            } else {
+                alert('You lost!');;
+            }
             break;
 
         case 'gameDraw':
