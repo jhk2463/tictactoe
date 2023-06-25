@@ -17,12 +17,19 @@
 
         <div class="container" id="container">
 
+            <div class="connectBox">
+                <form class="input" onsubmit="return false">
+                    <input id="username" type="text" placeholder="Enter your name">
+                    <input class="connectBtn" id="connectBtn" type="submit" value="Play">
+                </form>
+            </div>
+
             <div class="sidebar" id="sidebar">
                 <div class="flex-col1">
                     <!-- user details goes here -->
                 </div>
                 <div class="flex-col2">
-                    <button class="connectBtn" id="connectBtn">Connect</button>
+                    <!-- <button class="connectBtn" id="connectBtn">Connect</button>-->
                     <button class="createBtn" id="newGame">New Game</button>
                     <label for="joinGame" class="joinLabel">Available Games</label>
                     <ul class="currGames" id="currGames">
@@ -33,6 +40,7 @@
                 </div>
 
             </div>
+
             <div class="mainbar" id="mainbar">
                 <div class="gameStatus" id="gameStatus"></div>
                 <div class="board" id="board">

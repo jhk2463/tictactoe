@@ -3,14 +3,16 @@
 //Every time server sends a message to client, ONMESSAGE event is triggered
 //To send msg to server, SEND method of websocket object is used
 
-const sidebar = document.querySelector('.sidebar');
+const connectBox = document.querySelector('.connectBox');
 const connect = document.querySelector('.connectBtn');
+const sidebar = document.querySelector('.sidebar');
 const create = document.querySelector('.createBtn');
 const join = document.querySelector('.joinBtn');
 const userCol = document.querySelector('.flex-col1')
 const gamesList = document.querySelector('ul');
 const board = document.querySelector('.board');
 const cells = document.querySelectorAll('.cell');
+const username = document.querySelector('#username');
 create.disabled = true;
 join.disabled = true;
 
@@ -23,15 +25,16 @@ var symbol;
 connect.addEventListener('click', (src) => {    //Click connect button to connect to server
     socket = new WebSocket('ws://localhost:8080');
     socket.onmessage = onMessage;
-    src.target.disabled = true;                 //Button greys out
+    connectBox.style.display="none";    //Hides connect prompt 
+    console.log(username.value);
 });
 
 //Event listener for clicking on 'Create' button
 create.addEventListener('click', () => {
     socket.send(JSON.stringify({
         'tag': 'create',
-        'clientId': clientId
-
+        'clientId': clientId,
+        'username': username.value
     }))
 })
 
@@ -93,8 +96,9 @@ function onMessage(msg) {
     switch(data.tag){
         case 'connected':
             clientId = data.clientId;    //Create local copy of clientId sent from server
-            userCol.innerHTML = `UserId: ${clientId}`
-            userCol.classList.add('joinLabel') //Make a label w/ client's Id number
+            
+            userCol.innerHTML = `Name: ${username.value}`;
+            userCol.classList.add('joinLabel'); //Make a label w/ client's Id number
             create.disabled = false;
             join.disabled = false;
             break;
@@ -105,6 +109,15 @@ function onMessage(msg) {
             while(gamesList.firstChild){ 
                 gamesList.removeChild(gamesList.lastChild);
             }
+            for(var game in games){
+                const li = document.createElement('li');
+                console.log(game);
+                li.innerText = games[game];
+                li.style.textAlign = 'center';
+                gamesList.appendChild(li);
+                li.addEventListener('click', () => {gameId = game}) //Store last list item clicked on as client's 'gameId'
+            }
+            /*
             games.forEach( game => {
                 const li = document.createElement('li');
                 li.innerText = game;
@@ -112,6 +125,7 @@ function onMessage(msg) {
                 gamesList.appendChild(li);
                 li.addEventListener('click', () => {gameId = game}) //Store last list item clicked on as client's 'gameId'
             }) 
+            */
             break;
 
         case 'created':

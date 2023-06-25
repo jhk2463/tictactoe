@@ -45,11 +45,30 @@ body {
     box-shadow: 5px 10px 20px 10px #006666;
 }
 
+.connectBox {
+    width: 60vw;
+    height: 70vh;
+    background-color: white;
+    margin: auto;
+    display: grid;
+    clear: both;
+    position: absolute;
+    box-shadow: 5px 10px 20px 10px #006666;
+}
+
+.input {
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
 .sidebar {
     background-color: #94b8b8;
     display: flex;
     flex-flow: column;
     justify-content: center;
+    align-content: center;
 }
 
 .mainbar {

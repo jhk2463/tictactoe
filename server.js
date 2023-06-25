@@ -4,6 +4,8 @@
 //accept it, create unique connection with the client
 //Send and receive messages with the client using that connection object
 
+const { client } = require('websocket');
+
 const http = require('http').createServer().listen(8080, console.log("Listening on port 8080"))
 const WebSocket = require('websocket').server;    //Import websocket 
 const wss = new WebSocket({'httpServer' : http}); //Create websocket server 
@@ -17,7 +19,10 @@ const WIN_STATES = [ [0,1,2], [3,4,5], [6,7,8], [0,3,6], [1,4,7], [2,5,8], [0,4,
 wss.on('request', (req) => {
     const conn = req.accept(null, req.origin); //Variable to store particular client connection
     const clientId = Math.round(Math.random()*10) + Math.round(Math.random()*10) + Math.round(Math.random()*10) //Create 'unique' Id for client
-    clients[clientId] = { 'conn' : conn };     //Store clientId and connection 
+    clients[clientId] = { 
+        'conn' : conn,
+        'username': 'name'
+    };     //Store clientId and connection 
     conn.send(JSON.stringify({
         'tag': 'connected',          //Informing client that they are connected to server
         'clientId': clientId
@@ -30,11 +35,11 @@ wss.on('request', (req) => {
 
 //Function to send list of available games to each client
 function sendAvailableGames() {     
-    const availableGames = []; //Store game id of available games
+    const availableGames = {}; //Store game id of available games
     //Find games that have only 1 player             
     for(const game in games) {
         if(games[game].players.length<2){
-            availableGames.push(game);
+            availableGames[game] = games[game].gamename;
         }
     }
     //Send to every client connected
@@ -101,12 +106,14 @@ function onMessage(msg) {
 
             games[gameId] = {   //Game object
                 'board': board,
-                'players': players
+                'players': players,
+                'gamename': data.username + "'s Room"
             };
             
             clients[data.clientId].conn.send(JSON.stringify({  //Send client the created game
                 'tag': 'created',
-                'gameId': gameId
+                'gameId': gameId,
+                'gamename': data.username + "'s  Room"
             }))
             sendAvailableGames();
             break;
