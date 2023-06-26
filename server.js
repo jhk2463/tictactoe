@@ -130,7 +130,6 @@ function onMessage(msg) {
             sendAvailableGames();   //Refresh list of available games
             games[data.gameId].players.forEach(function(player,index) {
                 var opponent = 'name';
-                console.log(index);
                 if (index == 0) {
                     opponent = games[data.gameId].players[1].username;
                 } else {

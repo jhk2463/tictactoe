@@ -17,6 +17,8 @@ const statusBox = document.querySelector('.statusBox');
 const gameOpponent = document.querySelector('.gameOpponent');
 const gameSymbol = document.querySelector('.gameSymbol');
 const gameTurn = document.querySelector('.gameTurn');
+const gameResult = document.querySelector('.gameResult');
+const popup = document.querySelector('.popup');
 create.disabled = true;
 join.disabled = true;
 
@@ -145,8 +147,8 @@ function onMessage(msg) {
             symbol = data.symbol;
             console.log(data.symbol);
             console.log(data.opponent);
-            gameSymbol.innerText = "You are " + symbol;
-            gameOpponent.innerText = "You are playing against " + data.opponent;
+            gameSymbol.innerText = "You are '" + symbol + "'.";
+            gameOpponent.innerText = "You are playing against " + data.opponent + ".";
             statusBox.style.display="inline"; 
             if(symbol == 'x'){
                 board.classList.add('cross');
@@ -182,15 +184,17 @@ function onMessage(msg) {
             break;
         
         case 'winner':
+            popup.style.display='flex';
             if(data.isTurn) {
-                alert('You won!');
+                gameResult.innerText = 'You won!';
             } else {
-                alert('You lost!');;
+                gameResult.innerText = 'You lost!';
             }
             break;
 
         case 'gameDraw':
-            alert('The game is a draw');
+            popup.style.display='flex';
+            gameResult.innerText = 'The game is a draw';
             break;
     }
 

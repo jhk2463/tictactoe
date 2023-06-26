@@ -31,7 +31,7 @@
                 <div class="flex-col2">
                     <!-- <button class="connectBtn" id="connectBtn">Connect</button>-->
                     <button class="createBtn" id="newGame">New Game</button>
-                    <label for="joinGame" class="joinLabel">Available Games</label>
+                    <label for="joinGame" class="joinLabel">Rooms</label>
                     <ul class="currGames" id="currGames">
                         <li>No games </li>
                     </ul>
@@ -41,9 +41,15 @@
 
             </div>
 
+            <div class="popup">
+                <label class="gameResult">You won!</label>
+                <button class= "endBtn" type="button" onclick="closePopup()">Rematch</button>
+                <button class= "endBtn" type="button" onclick="closePopup()">Exit</button>
+            </div>
+
             <div class="mainbar" id="mainbar">
                 <div class="statusBox" id="statusBox">
-                    <label class="gameOpponent">You are playing against</label><br>
+                    <label class="gameOpponent">You are playing against</label>
                     <label class="gameSymbol">You are 'X'</label><br>
                     <label class="gameTurn">Opponent is making a move</label>
                 </div>
@@ -59,6 +65,7 @@
                     <div class="cell" id="cell"></div>
                 </div>
             </div>
+            
         </div>
     </div>
 </body>

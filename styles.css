@@ -78,12 +78,24 @@ body {
 
 .statusBox {
     display: none;
+    color: #006666;
+}
+
+.gameTurn {
+    display: flex;
+    justify-content: center;
+    background-color: #006666;
+    color: #d2e0e0;
+    width: 50%;
+    position: relative;
+    margin: auto;
+    margin-top: 5%;
 }
 
 .board {
     position: relative;
     margin: auto;
-    margin-top: 10%;
+    margin-top: 5%;
     /* top: 20%; */
     /* left: 5%; */
     /* display: grid; */
@@ -91,6 +103,39 @@ body {
     justify-content: center;
     align-content: center;
     display: none;
+}
+
+.popup {
+    background-color:#94b8b8;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    width: 250px;
+    height: 150px;
+    position: absolute;
+    z-index: 10;
+    top: 50%;
+    left: 60%;
+    transform: translate(-50%, -50%) scale(1);
+    text-align: center;
+    box-shadow: 0 5px 5px #006666;
+}
+
+.gameResult {
+    flex-grow: 0.5;
+    margin-top: 10%;
+    font-size: 1.5rem;
+    color: #015a5a;
+}
+
+.endBtn {
+    width: 50%;
+    position: relative;
+    margin-top: 0%;
+    margin-bottom: 5%;
+    margin-left: 25%;
+    color: white;
+    background-color: #006666;
 }
 
 .cell {
