@@ -84,6 +84,7 @@ body {
 .gameTurn {
     display: flex;
     justify-content: center;
+    text-align: center;
     background-color: #006666;
     color: #d2e0e0;
     width: 50%;
@@ -206,7 +207,9 @@ h1::after {
 }
 
 .createBtn,
-.connectBtn {
+.connectBtn,
+.joinBtn,
+.exitBtn {
     display: block;
     width: 95%;
     margin: 15px auto;
@@ -214,6 +217,10 @@ h1::after {
     color: white;
     font-size: 1.3rem;
     background-color: #006666;
+}
+
+.exitBtn {
+    display: none;
 }
 
 .joinLabel {
@@ -308,4 +315,9 @@ button[type='submit'] {
 .board.cross .cell:not(.cross):not(.circle):hover::after,
 .board.cross .cell:not(.crossx):not(.circle):hover::before {
     background-color: #94b8b8;
+}
+
+.grey-out {
+    color: rgb(202, 202, 202);;
+    background-color: rgb(103, 103, 103);
 }

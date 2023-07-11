@@ -101,7 +101,7 @@ function onMessage(msg) {
                 'clientId': data.clientId,
                 'username': data.username,
                 'symbol': 'x',      //Player 1 is x, player 2 is o
-                'isTurn': true
+                'isTurn': true,
             };
             const players = Array(playerOne);  //For two players
 
@@ -124,7 +124,7 @@ function onMessage(msg) {
                 'clientId': data.clientId,
                 'username': data.username,
                 'symbol': 'o',      //Player 1 is x, player 2 is o
-                'isTurn': false
+                'isTurn': false,
             }
             games[data.gameId].players.push(playerTwo);    //Assign 2nd player to game
             sendAvailableGames();   //Refresh list of available games
@@ -182,6 +182,37 @@ function onMessage(msg) {
                 });
                 updateBoard(data.gameId);
             }
+            break;
+
+        case 'rematch':
+            games[data.gameId].players.forEach(player => {
+                if (player.clientId != data.clientId) {     //Let other player know opponent wants rematch
+                    clients[player.clientId].conn.send(JSON.stringify({ 
+                        'tag': 'rematch'
+                    }));
+                }
+            });
+            break;
+        
+        case 'reset':
+            games[data.gameId].board = ['','','','','','','','',''];
+            //Flip 'isTurn' for both players
+            games[data.gameId].players.forEach(player => {
+                player.isTurn = !player.isTurn;
+            });
+            updateBoard(data.gameId);
+            break;
+
+        case 'exit':
+            games[data.gameId].players.forEach(player => {
+                if (player.clientId != data.clientId) {     //Let other player know opponent has exited
+                    clients[player.clientId].conn.send(JSON.stringify({ 
+                        'tag': 'exit'
+                    }));
+                }
+            });
+            delete games[data.gameId];
+            sendAvailableGames();
             break;
     }
 }
