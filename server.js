@@ -89,7 +89,7 @@ function drawState(gameId) {
     });
 }
 
-//Functtion to process message received from client
+//Function to process message received from client
 function onMessage(msg) {
     const data = JSON.parse(msg.utf8Data); //Need to use 'utf8Data' since we are on server
     switch(data.tag){
